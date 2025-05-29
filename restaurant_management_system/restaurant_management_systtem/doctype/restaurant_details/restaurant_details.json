@@ -1,0 +1,285 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:restaurant_name",
+ "creation": "2025-05-16 15:39:00.096533",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_taet",
+  "amended_from",
+  "restaurant_name",
+  "status",
+  "description",
+  "column_break_qutc",
+  "facebook_accounturl",
+  "food_style",
+  "restaurant_image",
+  "food_type",
+  "instagram_accounturl",
+  "owner_details_section",
+  "owner_name",
+  "restaurant_experience",
+  "contact_no",
+  "column_break_ivgv",
+  "email_id",
+  "profile_picture",
+  "restaurant_timing_details_section",
+  "opening_time",
+  "is_open_24x7",
+  "column_break_gphp",
+  "closing_time",
+  "restaurant_address_details_section",
+  "restaurant_address",
+  "restaurant_map_url",
+  "column_break_jcjg",
+  "city",
+  "state",
+  "pincode",
+  "restaurant_history_tab",
+  "storyhistory",
+  "ingredient_philosophy",
+  "column_break_abta",
+  "chef_bio",
+  "awards_and_recognition",
+  "tab_2_tab",
+  "route",
+  "published"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_taet",
+   "fieldtype": "Section Break",
+   "label": "Restaurant Details"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Restaurant Details",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "restaurant_name",
+   "fieldtype": "Data",
+   "label": "Restaurant Name",
+   "unique": 1
+  },
+  {
+   "fieldname": "tab_2_tab",
+   "fieldtype": "Tab Break",
+   "label": "Website Generator"
+  },
+  {
+   "fieldname": "route",
+   "fieldtype": "Data",
+   "label": "Route"
+  },
+  {
+   "default": "0",
+   "fieldname": "published",
+   "fieldtype": "Check",
+   "label": "published"
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "\nActive\nInactive\nUnder Renovation"
+  },
+  {
+   "fieldname": "description",
+   "fieldtype": "Small Text",
+   "label": "Description"
+  },
+  {
+   "fieldname": "facebook_accounturl",
+   "fieldtype": "Attach",
+   "label": "Facebook Account(URL)"
+  },
+  {
+   "fieldname": "food_style",
+   "fieldtype": "Select",
+   "label": "Food Style",
+   "options": "\nVegetarian Indian\nNon-Vegetarian Indian\nStreet Food\nChaat\nHealthy Indian\nFusion Indian"
+  },
+  {
+   "fieldname": "restaurant_image",
+   "fieldtype": "Attach",
+   "label": "Restaurant Image"
+  },
+  {
+   "fieldname": "food_type",
+   "fieldtype": "Select",
+   "label": "Food Type",
+   "options": "\nNorth Indian\nSouth Indian\nPunjabi\nMughlai\nRajasthani\nGujarati\nBengali\nMaharashtrian\nSouth Coastal\nKashmiri\nBihari\nHyderabadi\nAwadhi\nGoan\nTamil\nAndhra\nKerala Sadhya"
+  },
+  {
+   "fieldname": "instagram_accounturl",
+   "fieldtype": "Attach",
+   "label": "Instagram Account(URL)"
+  },
+  {
+   "fieldname": "owner_details_section",
+   "fieldtype": "Section Break",
+   "label": "Owner Details"
+  },
+  {
+   "fieldname": "owner_name",
+   "fieldtype": "Data",
+   "label": "Owner Name"
+  },
+  {
+   "fieldname": "restaurant_experience",
+   "fieldtype": "Data",
+   "label": "Restaurant Experience"
+  },
+  {
+   "fieldname": "contact_no",
+   "fieldtype": "Phone",
+   "label": "Contact No."
+  },
+  {
+   "fieldname": "email_id",
+   "fieldtype": "Data",
+   "label": "Email Id"
+  },
+  {
+   "fieldname": "profile_picture",
+   "fieldtype": "Attach",
+   "label": "Profile Picture"
+  },
+  {
+   "fieldname": "restaurant_timing_details_section",
+   "fieldtype": "Section Break",
+   "label": "Restaurant Timing Details"
+  },
+  {
+   "fieldname": "opening_time",
+   "fieldtype": "Time",
+   "label": "Opening Time"
+  },
+  {
+   "fieldname": "closing_time",
+   "fieldtype": "Time",
+   "label": "Closing Time"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_open_24x7",
+   "fieldtype": "Check",
+   "label": "Is OPen 24x7"
+  },
+  {
+   "fieldname": "restaurant_address_details_section",
+   "fieldtype": "Section Break",
+   "label": "Restaurant Address Details"
+  },
+  {
+   "fieldname": "restaurant_address",
+   "fieldtype": "Small Text",
+   "label": "Restaurant Address"
+  },
+  {
+   "fieldname": "city",
+   "fieldtype": "Data",
+   "label": "City"
+  },
+  {
+   "fieldname": "state",
+   "fieldtype": "Select",
+   "label": "State",
+   "options": "\nAndaman and Nicobar Islands\nAndhra Pradesh\nArunachal Pradesh\nAssam\nBihar\nChandigarh\nChhattisgarh\nDadra and Nagar Haveli and Daman and Diu\nDelhi\nGoa\nGujarat\nHaryana\nHimachal Pradesh\nJammu and Kashmir\nJharkhand\nKarnataka\nKerala\nLadakh\nLakshadweep\nMadhya Pradesh\nMaharashtra\nManipur\nMeghalaya\nMizoram\nNagaland\nOdisha\nPuducherry\nPunjab\nRajasthan\nSikkim\nTamil Nadu\nTelangana\nTripura\nUttar Pradesh\nUttarakhand\nWest Bengal"
+  },
+  {
+   "fieldname": "pincode",
+   "fieldtype": "Int",
+   "label": "Pincode"
+  },
+  {
+   "fieldname": "restaurant_map_url",
+   "fieldtype": "Small Text",
+   "label": "Restaurant Map URL"
+  },
+  {
+   "fieldname": "restaurant_history_tab",
+   "fieldtype": "Tab Break",
+   "label": "Restaurant History"
+  },
+  {
+   "fieldname": "storyhistory",
+   "fieldtype": "Small Text",
+   "label": "Story/HIstory"
+  },
+  {
+   "fieldname": "chef_bio",
+   "fieldtype": "Small Text",
+   "label": "Chef Bio"
+  },
+  {
+   "fieldname": "ingredient_philosophy",
+   "fieldtype": "Small Text",
+   "label": "Ingredient Philosophy"
+  },
+  {
+   "fieldname": "awards_and_recognition",
+   "fieldtype": "Small Text",
+   "label": "Awards And Recognition"
+  },
+  {
+   "fieldname": "column_break_qutc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_ivgv",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_gphp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_jcjg",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "column_break_abta",
+   "fieldtype": "Column Break"
+  }
+ ],
+ "grid_page_length": 50,
+ "has_web_view": 1,
+ "index_web_pages_for_search": 1,
+ "is_published_field": "published",
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-17 10:49:56.570279",
+ "modified_by": "Administrator",
+ "module": "Restaurant_Management_Systtem",
+ "name": "Restaurant Details",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "route": "Restro",
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

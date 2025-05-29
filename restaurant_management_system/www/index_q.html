@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savory Bistro | Fine Dining Experience</title>
+    <link rel="stylesheet" href="index_q.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <meta name="description" content="Savory Bistro - Experience exquisite dining with our carefully crafted menu. Reserve a table or order online.">
+</head>
+<body>
+    <header id="header">
+        <div class="logo-container">
+            <h1 class="logo">Savory Bistro</h1>
+        </div>
+        <nav>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#reservation">Reservation</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li class="cart-icon">
+                    <a href="#cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h2>Exquisite Dining Experience</h2>
+                    <p>Savor the moment with our chef-crafted dishes and warm ambiance</p>
+                    <div class="hero-buttons">
+                        <button class="btn primary" onclick="navigateTo('#menu')">View Menu</button>
+                        <button class="btn secondary" onclick="navigateTo('#reservation')">Book a Table</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="featured-container">
+                <h2 class="section-title">Featured Dishes</h2>
+                <div class="featured-dishes">
+                    <div class="featured-dish">
+                        <div class="dish-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                        </div>
+                        <div class="dish-content">
+                            <h3>Truffle Risotto</h3>
+                            <p>Creamy Arborio rice with wild mushrooms and truffle oil</p>
+                            <span class="price">$24.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'truffle-risotto', name: 'Truffle Risotto', price: 24.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="featured-dish">
+                        <div class="dish-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-fish"></i>
+                            </div>
+                        </div>
+                        <div class="dish-content">
+                            <h3>Grilled Salmon</h3>
+                            <p>Fresh Atlantic salmon with lemon herb butter and seasonal vegetables</p>
+                            <span class="price">$28.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'grilled-salmon', name: 'Grilled Salmon', price: 28.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="featured-dish">
+                        <div class="dish-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-drumstick-bite"></i>
+                            </div>
+                        </div>
+                        <div class="dish-content">
+                            <h3>Coq au Vin</h3>
+                            <p>Traditional French chicken braised with wine, lardons, and mushrooms</p>
+                            <span class="price">$26.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'coq-au-vin', name: 'Coq au Vin', price: 26.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="hours">
+                    <h3><i class="far fa-clock"></i> Hours</h3>
+                    <p>Monday - Thursday: 11:00 AM - 10:00 PM</p>
+                    <p>Friday - Saturday: 11:00 AM - 11:00 PM</p>
+                    <p>Sunday: 10:00 AM - 9:00 PM</p>
+                </div>
+                <div class="location">
+                    <h3><i class="fas fa-map-marker-alt"></i> Location</h3>
+                    <p>123 Gourmet Avenue</p>
+                    <p>Culinary District</p>
+                    <p>Foodie City, FC 12345</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section -->
+        <section id="menu" class="section">
+            <h2 class="section-title">Our Menu</h2>
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="starters">Starters</button>
+                <button class="category-btn" data-category="mains">Main Courses</button>
+                <button class="category-btn" data-category="desserts">Desserts</button>
+                <button class="category-btn" data-category="drinks">Drinks</button>
+            </div>
+            
+            <div class="menu-items-container">
+                <!-- Starters -->
+                <div class="menu-items active" id="starters">
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-cheese"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Bruschetta</h3>
+                            <p>Toasted bread topped with fresh tomatoes, basil, and garlic</p>
+                            <span class="price">$9.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'bruschetta', name: 'Bruschetta', price: 9.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-leaf"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Caprese Salad</h3>
+                            <p>Fresh mozzarella, tomatoes, and basil drizzled with balsamic glaze</p>
+                            <span class="price">$12.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'caprese-salad', name: 'Caprese Salad', price: 12.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-carrot"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Stuffed Mushrooms</h3>
+                            <p>Baked mushroom caps filled with herb cream cheese and parmesan</p>
+                            <span class="price">$11.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'stuffed-mushrooms', name: 'Stuffed Mushrooms', price: 11.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Courses -->
+                <div class="menu-items" id="mains">
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-utensils"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Filet Mignon</h3>
+                            <p>8oz beef tenderloin with red wine reduction and truffle mashed potatoes</p>
+                            <span class="price">$34.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'filet-mignon', name: 'Filet Mignon', price: 34.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-fish"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Seafood Linguine</h3>
+                            <p>Fresh pasta with shrimp, scallops, and calamari in a light garlic sauce</p>
+                            <span class="price">$29.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'seafood-linguine', name: 'Seafood Linguine', price: 29.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-seedling"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Vegetable Wellington</h3>
+                            <p>Roasted vegetables wrapped in puff pastry with herb sauce</p>
+                            <span class="price">$22.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'vegetable-wellington', name: 'Vegetable Wellington', price: 22.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desserts -->
+                <div class="menu-items" id="desserts">
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Tiramisu</h3>
+                            <p>Classic Italian dessert with layers of coffee-soaked ladyfingers and mascarpone</p>
+                            <span class="price">$9.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'tiramisu', name: 'Tiramisu', price: 9.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-ice-cream"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Crème Brûlée</h3>
+                            <p>Rich custard topped with a layer of caramelized sugar</p>
+                            <span class="price">$8.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'creme-brulee', name: 'Crème Brûlée', price: 8.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-candy-cane"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Chocolate Fondant</h3>
+                            <p>Warm chocolate cake with a molten center, served with vanilla ice cream</p>
+                            <span class="price">$10.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'chocolate-fondant', name: 'Chocolate Fondant', price: 10.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Drinks -->
+                <div class="menu-items" id="drinks">
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-wine-glass-alt"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>House Red Wine</h3>
+                            <p>Glass of our signature Cabernet Sauvignon</p>
+                            <span class="price">$7.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'red-wine', name: 'House Red Wine', price: 7.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-cocktail"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Signature Martini</h3>
+                            <p>Premium vodka with a hint of elderflower and fresh lime</p>
+                            <span class="price">$12.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'signature-martini', name: 'Signature Martini', price: 12.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                    <div class="menu-item">
+                        <div class="menu-item-image">
+                            <div class="placeholder-image">
+                                <i class="fas fa-coffee"></i>
+                            </div>
+                        </div>
+                        <div class="menu-item-content">
+                            <h3>Artisan Coffee</h3>
+                            <p>Freshly brewed specialty coffee from local roasters</p>
+                            <span class="price">$4.99</span>
+                            <button class="btn small" onclick="addToCart({id: 'artisan-coffee', name: 'Artisan Coffee', price: 4.99, quantity: 1})">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reservation Section -->
+        <section id="reservation" class="section">
+            <h2 class="section-title">Reserve a Table</h2>
+            <div class="reservation-container">
+                <div class="reservation-image">
+                    <div class="placeholder-image large">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                </div>
+                <div class="reservation-form-container">
+                    <form id="reservation-form" class="reservation-form">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" required>
+                            <span class="error-message" id="name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                            <span class="error-message" id="email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                            <span class="error-message" id="phone-error"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" name="date" required>
+                                <span class="error-message" id="date-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Time</label>
+                                <input type="time" id="time" name="time" required>
+                                <span class="error-message" id="time-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="guests">Number of Guests</label>
+                            <select id="guests" name="guests" required>
+                                <option value="">Select</option>
+                                <option value="1">1 Person</option>
+                                <option value="2">2 People</option>
+                                <option value="3">3 People</option>
+                                <option value="4">4 People</option>
+                                <option value="5">5 People</option>
+                                <option value="6">6 People</option>
+                                <option value="7+">7+ People</option>
+                            </select>
+                            <span class="error-message" id="guests-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="occasion">Special Occasion (Optional)</label>
+                            <select id="occasion" name="occasion">
+                                <option value="">None</option>
+                                <option value="birthday">Birthday</option>
+                                <option value="anniversary">Anniversary</option>
+                                <option value="business">Business Dinner</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="requests">Special Requests (Optional)</label>
+                            <textarea id="requests" name="requests" rows="3"></textarea>
+                        </div>
+                        <div class="form-group terms">
+                            <input type="checkbox" id="terms" name="terms" required>
+                            <label for="terms">I agree to the cancellation policy</label>
+                            <span class="error-message" id="terms-error"></span>
+                        </div>
+                        <button type="submit" class="btn primary">Confirm Reservation</button>
+                    </form>
+                    <div id="reservation-confirmation" class="confirmation-message hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Your Reservation is Confirmed!</h3>
+                        <p>A confirmation email has been sent to your email address.</p>
+                        <p id="reservation-details"></p>
+                        <button class="btn secondary" onclick="resetReservationForm()">Make Another Reservation</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2 class="section-title">About Savory Bistro</h2>
+            <div class="about-container">
+                <div class="about-image">
+                    <div class="placeholder-image large">
+                        <i class="fas fa-store"></i>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <h3>Our Story</h3>
+                    <p>Founded in 2010, Savory Bistro has been serving exquisite cuisine in a warm and elegant atmosphere. Our mission is to provide an exceptional dining experience through a combination of delectable food, impeccable service, and a welcoming ambiance.</p>
+                    
+                    <h3>Our Chef</h3>
+                    <p>Executive Chef Michael Laurent brings over 20 years of culinary expertise from renowned restaurants across Europe. His innovative approach to classic cuisine creates unique flavors that delight our guests daily.</p>
+                    
+                    <h3>Our Ingredients</h3>
+                    <p>We believe in using only the freshest, locally-sourced ingredients. We partner with regional farmers and producers to ensure every dish represents the best seasonal offerings available.</p>
+                    
+                    <div class="awards">
+                        <h3>Awards & Recognition</h3>
+                        <ul>
+                            <li><i class="fas fa-award"></i> Best Fine Dining 2022 - City Culinary Awards</li>
+                            <li><i class="fas fa-award"></i> Chef's Excellence Award 2021</li>
+                            <li><i class="fas fa-award"></i> Wine Selection of the Year 2020</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p>123 Gourmet Avenue</p>
+                            <p>Culinary District</p>
+                            <p>Foodie City, FC 12345</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>Reservations: (555) 123-4567</p>
+                            <p>General Inquiries: (555) 765-4321</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>reservations@savorybistro.com</p>
+                            <p>info@savorybistro.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="far fa-clock"></i>
+                        <div>
+                            <h3>Hours</h3>
+                            <p>Monday - Thursday: 11:00 AM - 10:00 PM</p>
+                            <p>Friday - Saturday: 11:00 AM - 11:00 PM</p>
+                            <p>Sunday: 10:00 AM - 9:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-container">
+                    <h3>Send us a Message</h3>
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="contact-name">Name</label>
+                            <input type="text" id="contact-name" name="contact-name" required>
+                            <span class="error-message" id="contact-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Email</label>
+                            <input type="email" id="contact-email" name="contact-email" required>
+                            <span class="error-message" id="contact-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                            <span class="error-message" id="subject-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                            <span class="error-message" id="message-error"></span>
+                        </div>
+                        <button type="submit" class="btn primary">Send Message</button>
+                    </form>
+                    <div id="contact-confirmation" class="confirmation-message hidden">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Thank You!</h3>
+                        <p>Your message has been sent successfully. We'll get back to you shortly.</p>
+                        <button class="btn secondary" onclick="resetContactForm()">Send Another Message</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Section -->
+        <section id="cart" class="section">
+            <h2 class="section-title">Your Order</h2>
+            <div id="cart-container" class="cart-container">
+                <div id="empty-cart" class="empty-cart">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Your cart is empty</p>
+                    <button class="btn secondary" onclick="navigateTo('#menu')">Browse Menu</button>
+                </div>
+                <div id="cart-items" class="cart-items hidden">
+                    <!-- Cart items will be added here by JavaScript -->
+                </div>
+                <div id="cart-summary" class="cart-summary hidden">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Tax (10%):</span>
+                        <span id="cart-tax">$0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="cart-total">$0.00</span>
+                    </div>
+                    <button class="btn primary" onclick="showCheckoutForm()">Proceed to Checkout</button>
+                    <button class="btn secondary" onclick="clearCart()">Clear Cart</button>
+                </div>
+            </div>
+
+            <div id="checkout-form-container" class="checkout-form-container hidden">
+                <h3>Complete Your Order</h3>
+                <form id="checkout-form" class="checkout-form">
+                    <div class="form-section">
+                        <h4>Delivery Information</h4>
+                        <div class="form-group">
+                            <label for="checkout-name">Full Name</label>
+                            <input type="text" id="checkout-name" name="checkout-name" required>
+                            <span class="error-message" id="checkout-name-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-phone">Phone Number</label>
+                            <input type="tel" id="checkout-phone" name="checkout-phone" pattern="[0-9]{10}" required>
+                            <span class="error-message" id="checkout-phone-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-email">Email</label>
+                            <input type="email" id="checkout-email" name="checkout-email" required>
+                            <span class="error-message" id="checkout-email-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="checkout-address">Delivery Address</label>
+                            <textarea id="checkout-address" name="checkout-address" rows="3" required></textarea>
+                            <span class="error-message" id="checkout-address-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="delivery-time">Delivery Time</label>
+                            <select id="delivery-time" name="delivery-time" required>
+                                <option value="">Select</option>
+                                <option value="asap">As Soon As Possible</option>
+                                <option value="30mins">In 30 Minutes</option>
+                                <option value="1hour">In 1 Hour</option>
+                                <option value="2hours">In 2 Hours</option>
+                            </select>
+                            <span class="error-message" id="delivery-time-error"></span>
+                        </div>
+                    </div>
+                    <div class="form-section">
+                        <h4>Payment Method</h4>
+                        <div class="form-group payment-options">
+                            <div class="payment-option">
+                                <input type="radio" id="payment-cash" name="payment-method" value="cash" checked>
+                                <label for="payment-cash">Cash on Delivery</label>
+                            </div>
+                            <div class="payment-option">
+                                <input type="radio" id="payment-card" name="payment-method" value="card">
+                                <label for="payment-card">Credit/Debit Card</label>
+                            </div>
+                        </div>
+                        <div id="card-details" class="card-details hidden">
+                            <div class="form-group">
+                                <label for="card-number">Card Number</label>
+                                <input type="text" id="card-number" name="card-number" placeholder="XXXX XXXX XXXX XXXX">
+                                <span class="error-message" id="card-number-error"></span>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="card-expiry">Expiry Date</label>
+                                    <input type="text" id="card-expiry" name="card-expiry" placeholder="MM/YY">
+                                    <span class="error-message" id="card-expiry-error"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="card-cvv">CVV</label>
+                                    <input type="text" id="card-cvv" name="card-cvv" placeholder="XXX">
+                                    <span class="error-message" id="card-cvv-error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="order-notes">Special Instructions (Optional)</label>
+                        <textarea id="order-notes" name="order-notes" rows="2"></textarea>
+                    </div>
+                    <div class="order-summary">
+                        <h4>Order Summary</h4>
+                        <div id="checkout-items" class="checkout-items">
+                            <!-- Order items will be added here by JavaScript -->
+                        </div>
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="checkout-subtotal">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Tax (10%):</span>
+                            <span id="checkout-tax">$0.00</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Delivery Fee:</span>
+                            <span id="delivery-fee">$5.00</span>
+                        </div>
+                        <div class="summary-row total">
+                            <span>Total:</span>
+                            <span id="checkout-total">$0.00</span>
+                        </div>
+                    </div>
+                    <div class="checkout-buttons">
+                        <button type="submit" class="btn primary">Place Order</button>
+                        <button type="button" class="btn secondary" onclick="hideCheckoutForm()">Back to Cart</button>
+                    </div>
+                </form>
+                <div id="order-confirmation" class="confirmation-message hidden">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>Your Order is Confirmed!</h3>
+                    <p>Thank you for your order. A confirmation has been sent to your email.</p>
+                    <p id="order-number">Order #: <span></span></p>
+                    <p id="order-details"></p>
+                    <button class="btn primary" onclick="navigateTo('#menu')">Continue Shopping</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h2>Savory Bistro</h2>
+                <p>Exquisite dining experience since 2010</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#reservation">Reservation</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-hours">
+                <h3>Hours</h3>
+                <p>Monday - Thursday: 11:00 AM - 10:00 PM</p>
+                <p>Friday - Saturday: 11:00 AM - 11:00 PM</p>
+                <p>Sunday: 10:00 AM - 9:00 PM</p>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Gourmet Avenue, Foodie City</p>
+                <p><i class="fas fa-phone-alt"></i> (555) 123-4567</p>
+                <p><i class="fas fa-envelope"></i> info@savorybistro.com</p>
+                <div class="social-icons">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Pinterest"><i class="fab fa-pinterest-p"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Savory Bistro. All Rights Reserved.</p>
+            <div class="footer-policy-links">
+                <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="index_q.js"></script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:OM-{customer_name}-{####}",
+ "creation": "2025-05-09 10:33:58.372526",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_eiwf",
+  "customer_name",
+  "restaurant_name",
+  "restaurant_owner",
+  "instructions_for_food",
+  "column_break_cdbq",
+  "order_status",
+  "served_by",
+  "payment_status",
+  "delivered_by",
+  "order_type",
+  "section_break_kopq",
+  "order_items_column",
+  "order_meal_list",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_eiwf",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Order Meal",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "customer_name",
+   "fieldtype": "Link",
+   "label": "Customer Name",
+   "options": "Customer"
+  },
+  {
+   "fetch_from": "restaurant_name.owner_name",
+   "fieldname": "restaurant_owner",
+   "fieldtype": "Data",
+   "label": "Restaurant Owner"
+  },
+  {
+   "fieldname": "order_type",
+   "fieldtype": "Select",
+   "label": "Order Type",
+   "options": "\nDine-in\nTake-away\nHome Delivery"
+  },
+  {
+   "fieldname": "column_break_cdbq",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "order_status",
+   "fieldtype": "Select",
+   "label": "Order Status",
+   "options": "Draft\nPending\nApproved\nRejected\nPreparing\nReady\nOut for Delivery\nServed\nDelivered\nCancelled",
+   "read_only": 1
+  },
+  {
+   "fieldname": "payment_status",
+   "fieldtype": "Select",
+   "label": "Payment Status",
+   "options": "\nPaid\nUnpaid\nPartially Paid\nRefunded"
+  },
+  {
+   "fieldname": "delivered_by",
+   "fieldtype": "Datetime",
+   "label": "Delivered By",
+   "read_only": 1
+  },
+  {
+   "fieldname": "instructions_for_food",
+   "fieldtype": "Small Text",
+   "label": "Instructions For Food"
+  },
+  {
+   "fieldname": "served_by",
+   "fieldtype": "Data",
+   "label": "Served By"
+  },
+  {
+   "fieldname": "order_items_column",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "order_meal_list",
+   "fieldtype": "Table",
+   "label": "Order Meal List",
+   "options": "Order Meal Item"
+  },
+  {
+   "fieldname": "section_break_kopq",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Order Meal",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "restaurant_name",
+   "fieldtype": "Link",
+   "label": "Restaurant Name",
+   "options": "Restaurant Master"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-13 09:54:40.805184",
+ "modified_by": "Administrator",
+ "module": "Restaurant_Management_Systtem",
+ "name": "Order Meal",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

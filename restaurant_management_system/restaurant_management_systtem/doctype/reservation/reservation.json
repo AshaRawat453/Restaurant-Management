@@ -1,0 +1,97 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "format:RSV-{MM}-{####} ",
+ "creation": "2025-05-09 12:24:30.818560",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "section_break_h1fl",
+  "amended_from",
+  "customer",
+  "table",
+  "column_break_zxra",
+  "reservation_date",
+  "reservation_time",
+  "seating_capacity"
+ ],
+ "fields": [
+  {
+   "fieldname": "section_break_h1fl",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Reservation",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "customer",
+   "fieldtype": "Link",
+   "label": "Customer",
+   "options": "Order Meal"
+  },
+  {
+   "fetch_from": "customer.table_name",
+   "fieldname": "table",
+   "fieldtype": "Read Only",
+   "label": "Table"
+  },
+  {
+   "fieldname": "column_break_zxra",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "customer.custom_reservation_date",
+   "fieldname": "reservation_date",
+   "fieldtype": "Read Only",
+   "label": "Reservation Date"
+  },
+  {
+   "fetch_from": "customer.custom_reservation_time",
+   "fieldname": "reservation_time",
+   "fieldtype": "Read Only",
+   "label": "Reservation Time"
+  },
+  {
+   "fetch_from": "customer.seating_capacity",
+   "fieldname": "seating_capacity",
+   "fieldtype": "Read Only",
+   "label": "Seating Capacity"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-09 15:13:35.503879",
+ "modified_by": "Administrator",
+ "module": "Restaurant_Management_Systtem",
+ "name": "Reservation",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

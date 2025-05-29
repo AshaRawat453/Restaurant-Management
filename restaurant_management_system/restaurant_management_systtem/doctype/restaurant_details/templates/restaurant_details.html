@@ -1,0 +1,1245 @@
+{% extends "templates/web.html" %}
+
+{% block page_content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<div class="restaurant-page-container">
+    <!-- Restaurant Header -->
+    <header class="restaurant-header">
+        <div class="logo-container">
+            <h1 class="logo">{{ doc.restaurant_name }}</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <!-- <li class="cart-icon">
+                    <a href="#cart-section">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </li> -->
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Restaurant Hero Section -->
+    <section class="restaurant-hero">
+        <div class="hero-image" style="background-image: url('https://images.unsplash.com/photo-1628883328405-34fbe848bed1?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGFzdGVsJTIweWVsbG93fGVufDB8fDB8fHww');">
+            <div class="hero-content">
+                {% if doc.restaurant_name %}
+                <h2>{{ doc.restaurant_name }}</h2>
+                {% endif %}
+                {% if doc.description %}
+                <p>{{ doc.description }}</p>
+                {% endif %}
+                <button id ="TableBooking" onclick="window.location.href='/all-products'">Order Your Meal</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <h2 class="section-title">About Us</h2>
+        <div class="about-content">
+            <div class="about-text">
+                {% if doc.storyhistory %}
+                <h3>Our Story</h3>
+                <p>{{ doc.storyhistory }}</p>
+                {% endif %}
+                {% if doc.chef_bio %}
+                <h3>Our Chef</h3>
+                <p>{{ doc.chef_bio}}</p>
+                {% endif %}
+
+                {% if doc.ingredient_philosophy %}
+                <h3>Our Philosophy</h3>
+                <p>{{ doc.ingredient_philosophy or "We believe in using only the finest ingredients..." }}</p>
+                {% endif %}
+            </div>
+            <div style="height:540px; margin-top:90px" class="about-image">
+                <img src="https://png.pngtree.com/thumb_back/fh260/background/20230927/pngtree-the-writing-ink-pen-sat-on-a-brown-background-in-front-image_13369004.jpg" alt="About {{ doc.restaurant_name }}">
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Address</h3>
+                    {% if doc.restaurant_address %}
+                    <p>{{ doc.restaurant_address }}</p>
+                    {% endif %}
+                    {% if doc.city and doc.state and doc.pincode %}
+                    <p>{{ doc.city }}, {{ doc.state }} - {{ doc.pincode }}</p>
+                    {% endif %}
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <h3>Phone</h3>
+                    {% if doc.contact_no %}
+                    <p>{{ doc.contact_no }}</p>
+                    {% endif %}
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    {% if doc.email_id %}
+                    <p>{{ doc.email_id }}</p>
+                    {% endif %}
+                </div>
+                <div class="contact-card">
+                    <i class="fas fa-clock"></i>
+                    <h3>Opening Hours</h3>
+                    <p>Monday - Friday: <br>
+                    {% if doc.opening_time and doc.closing_time %}
+                    Opens at:- {{ doc.opening_time }} <br>
+                    Close at:- {{ doc.closing_time }}</p>
+                    {% endif %}
+                    {% if doc.is_open_24x7 %}
+                    <p>Open 24/7</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send us a message</h3>
+                <form action="https://api.web3forms.com/submit" method="POST" class="form" data-form>
+                    <input type="hidden" name="access_key" value="f32ce06b-b367-4fdb-8b51-78935f564d6b">
+                    <div class="form-group">
+                        <input type="text" name="name" class="form-input" placeholder="Your Name" required data-form-input>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" class="form-input" placeholder="Your Email" required data-form-input>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" class="form-input" placeholder="Subject" required data-form-input>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" class="form-input" placeholder="Your Message" required data-form-input></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Map Section -->
+    <section class="mapbox" data-mapbox>
+        {% if doc.restaurant_map_url %}
+        <figure>
+            <iframe src="{{doc.restaurant_map_url}}" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </figure>
+        {% endif %}
+    </section>
+
+    <!-- Footer -->
+    <footer class="restaurant-footer">
+        <div class="footer-content">
+            <div class="footer-about">
+                {% if doc.restaurant_name %}
+                <h3>{{ doc.restaurant_name }}</h3>
+                {% endif %}
+                {% if doc.description %}
+                <p>{{ doc.description }}</p>
+                {% endif %}
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#menu">Menu</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-contact">
+                <h3>Contact Info</h3>
+                {% if doc.restaurant_address %}
+                <p><i class="fas fa-map-marker-alt"></i> {{ doc.restaurant_address }}</p>
+                {% endif %}
+                {% if doc.contact_no %}
+                <p><i class="fas fa-phone-alt"></i> {{ doc.contact_no }}</p>
+                {% endif %}
+                {% if doc.email_id %}
+                <p><i class="fas fa-envelope"></i> {{ doc.email_id }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="footer-bottom">
+             <p>© {{ frappe.utils.nowdate().split('-')[0] }} {{ doc.restaurant_name }}. All rights reserved.</p>
+        </div>
+    </footer>
+</div>
+
+<style>
+:root {
+    --primary-color: #8b4513;
+    --secondary-color: #3e2723;
+    --accent-color: #d4a762;
+    --light-color: #f9f5eb;
+    --dark-color: #333;
+    --light-gray: #f5f5f5;
+    --medium-gray: #e0e0e0;
+    --dark-gray: #757575;
+    --white: #ffffff;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+    --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--dark-color);
+    background-color: var(--light-color);
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.section-title {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--secondary-color);
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--accent-color);
+}
+#TableBooking{
+    background-color: var(--primary-color);
+    border-radius: 5px;
+    padding: 5px;
+    color:white;
+}
+.btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+/* Header Styles */
+.restaurant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--white);
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+}
+
+.nav-links a {
+    font-weight: 600;
+    position: relative;
+    padding: 0.5rem 0;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-color);
+    transition: var(--transition);
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.cart-icon {
+    position: relative;
+    font-size: 1.2rem;
+}
+
+.cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+/* Hero Section */
+.restaurant-hero {
+    margin-bottom: 3rem;
+}
+
+.hero-image {
+    height: 60vh;
+    min-height: 400px;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.hero-image::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    color: var(--white);
+    text-align: center;
+    padding: 2rem;
+    max-width: 800px;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+/* Main Content Layout */
+.main-content-wrapper {
+    padding: 0 2rem;
+    max-width: 1400px;
+    margin: 0 auto 4rem;
+}
+
+/* Menu Section */
+.menu-section {
+    width: 100%;
+}
+
+/* Menu Categories */
+.menu-categories {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+}
+
+.menu-categories::-webkit-scrollbar {
+    height: 5px;
+}
+
+.menu-categories::-webkit-scrollbar-thumb {
+    background-color: var(--medium-gray);
+    border-radius: 5px;
+}
+
+.category-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--light-gray);
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+    font-weight: 600;
+}
+
+.category-btn:hover, .category-btn.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+/* Menu Items */
+.menu-items-container {
+    margin-bottom: 2rem;
+}
+
+.menu-items {
+    display: none;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.menu-items.active {
+    display: grid;
+}
+
+.menu-item {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.menu-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.item-image {
+    height: 200px;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.placeholder-image {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-gray);
+    color: var(--dark-gray);
+}
+
+.placeholder-image i {
+    font-size: 3rem;
+}
+
+.item-details {
+    padding: 1.5rem;
+}
+
+.item-details h3 {
+    margin-bottom: 0.5rem;
+    color: var(--secondary-color);
+}
+
+.item-details p {
+    margin-bottom: 1rem;
+    color: var(--dark-gray);
+}
+
+.item-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: 700;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.add-to-cart-btn {
+    padding: 0.5rem 1rem;
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.add-to-cart-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.add-to-cart-btn:disabled {
+    background-color: var(--medium-gray);
+    cursor: not-allowed;
+}
+
+/* Cart Section */
+/* .cart-section {
+    padding: 2rem 0;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 3rem;
+}
+
+.cart-content {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.cart-items-container {
+    margin-bottom: 1.5rem;
+}
+
+.cart-items-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-items-table th,
+.cart-items-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.cart-items-table th {
+    background-color: var(--light-gray);
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+.cart-item-quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.quantity-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid var(--medium-gray);
+    background: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.quantity-btn:hover {
+    background-color: var(--light-gray);
+}
+
+.remove-item-btn {
+    background: none;
+    border: none;
+    color: var(--dark-gray);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.remove-item-btn:hover {
+    color: #e53935;
+}
+
+.empty-cart-message {
+    text-align: center;
+    padding: 2rem 0;
+    color: var(--dark-gray);
+}
+
+.empty-cart-message i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--medium-gray);
+}
+
+.cart-summary {
+    text-align: right;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 2rem;
+    margin-bottom: 0.75rem;
+}
+
+.summary-row.total {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--medium-gray);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.cart-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.clear-cart-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: #e53935;
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.clear-cart-btn:hover {
+    background-color: #c62828;
+}
+
+.checkout-btn {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 600;
+}
+
+.checkout-btn:hover {
+    background-color: var(--secondary-color);
+} */
+
+/* About Section */
+.about-section {
+    padding: 4rem 2rem;
+    background-color: var(--white);
+    margin-bottom: 3rem;
+}
+
+.about-content {
+    display: flex;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.about-text {
+    flex: 2;
+}
+
+.about-text h3 {
+    margin: 1.5rem 0 1rem;
+    color: var(--secondary-color);
+}
+
+.about-image {
+    flex: 1;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+/* Contact Section */
+.contact-section {
+    padding: 4rem 2rem;
+    background-color: var(--light-gray);
+}
+
+.contact-container {
+    display: flex;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contact-info {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.contact-card {
+    background-color: var(--white);
+    padding: 1.5rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.contact-card i {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.contact-card h3 {
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+.contact-form {
+    flex: 1;
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+}
+
+.contact-form h3 {
+    margin-bottom: 1.5rem;
+    color: var(--secondary-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    transition: var(--transition);
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.2);
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.submit-btn:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Map Section */
+.mapbox {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 0 2rem 4rem;
+}
+
+.mapbox figure {
+    height: 450px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.mapbox iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Footer */
+.restaurant-footer {
+    background-color: var(--secondary-color);
+    color: var(--light-color);
+    padding: 4rem 2rem 2rem;
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+}
+
+.footer-about {
+    flex: 2;
+    min-width: 300px;
+}
+
+.footer-about h3 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.footer-links {
+    flex: 1;
+    min-width: 150px;
+}
+
+.footer-links h3 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.footer-links ul {
+    list-style: none;
+}
+
+.footer-links li {
+    margin-bottom: 0.5rem;
+}
+
+.footer-links a:hover {
+    color: var(--accent-color);
+}
+
+.footer-contact {
+    flex: 1;
+    min-width: 200px;
+}
+
+.footer-contact h3 {
+    margin-bottom: 1rem;
+    color: var(--accent-color);
+}
+
+.footer-contact p {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--light-color);
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background-color: var(--accent-color);
+    color: var(--secondary-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .cart-items-table {
+        font-size: 0.9rem;
+    }
+    
+    .cart-items-table th,
+    .cart-items-table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .restaurant-header {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    
+    .logo {
+        margin-bottom: 1rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .contact-container {
+        flex-direction: column;
+    }
+    
+    .footer-content {
+        flex-direction: column;
+    }
+    
+    .cart-items-table {
+        display: block;
+    }
+    
+    .cart-items-table thead {
+        display: none;
+    }
+    
+    .cart-items-table tr {
+        display: block;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background-color: var(--light-gray);
+        border-radius: var(--border-radius);
+    }
+    
+    .cart-items-table td {
+        display: block;
+        text-align: left;
+        padding: 0.5rem 0;
+        border: none;
+    }
+    
+    .cart-items-table td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--secondary-color);
+        display: inline-block;
+        width: 100px;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .clear-cart-btn,
+    .checkout-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .menu-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .hero-image {
+        height: 50vh;
+        min-height: 300px;
+    }
+}
+</style>
+
+<script>
+// Initialize cart functionality when the DOM is fully loaded
+// document.addEventListener('DOMContentLoaded', function() {
+//     // Load cart from localStorage or initialize empty array
+//     let cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+    
+//     // Update cart UI on page load
+//     updateCartUI();
+    
+//     // Add event listeners for add-to-cart buttons
+//     document.querySelectorAll('.add-to-cart-btn').forEach(button => {
+//         button.addEventListener('click', function() {
+//             try {
+//                 const item = JSON.parse(this.getAttribute('data-item'));
+//                 if (item && item.id && item.name && typeof item.price === 'number' && item.price > 0) {
+//                     addToCart(item);
+//                 } else {
+//                     console.error('Invalid item data:', item);
+//                     alert('Error: Unable to add item to cart. Item may have an invalid price.');
+//                 }
+//             } catch (error) {
+//                 console.error('Error parsing item data:', error);
+//                 alert('Error: Unable to add item to cart.');
+//             }
+//         });
+//     });
+    
+//     // Add event listeners for category buttons
+//     document.querySelectorAll('.category-btn').forEach(button => {
+//         button.addEventListener('click', function() {
+//             document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+//             this.classList.add('active');
+//             document.querySelectorAll('.menu-items').forEach(items => items.classList.remove('active'));
+//             const category = this.getAttribute('data-category');
+//             document.getElementById(category.replace(' ', '-').toLowerCase()).classList.add('active');
+//         });
+//     });
+// });
+
+// // Add item to cart
+// function addToCart(item) {
+//     let cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+    
+//     // Validate item data
+//     if (!item.id || !item.name || isNaN(item.price) || item.price <= 0) {
+//         console.error('Invalid item data:', item);
+//         return;
+//     }
+    
+//     // Check if item exists in cart
+//     const existingItem = cart.find(cartItem => cartItem.id === item.id);
+    
+//     if (existingItem) {
+//         existingItem.quantity += 1;
+//     } else {
+//         cart.push({ id: item.id, name: item.name, price: item.price, quantity: 1 });
+//     }
+    
+//     // Save to localStorage
+//     localStorage.setItem('restaurantCart', JSON.stringify(cart));
+    
+//     // Update UI and show notification
+//     updateCartUI();
+//     showCartNotification(item.name);
+// }
+
+// // Update cart UI
+// function updateCartUI() {
+//     const cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+//     const container = document.querySelector('.cart-items-container');
+//     const summary = document.querySelector('.cart-summary');
+//     const emptyMessage = document.querySelector('.empty-cart-message');
+    
+//     // Update cart count
+//     const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+//     document.querySelector('.cart-count').textContent = totalItems;
+    
+//     // Clear container
+//     container.innerHTML = '';
+    
+//     if (cart.length === 0) {
+//         emptyMessage.classList.remove('hidden');
+//         summary.classList.add('hidden');
+//         return;
+//     }
+    
+//     // Show items and summary
+//     emptyMessage.classList.add('hidden');
+//     summary.classList.remove('hidden');
+    
+//     // Create table
+//     const table = document.createElement('table');
+//     table.className = 'cart-items-table';
+//     table.innerHTML = `
+//         <thead>
+//             <tr>
+//                 <th>Item</th>
+//                 <th>Price</th>
+//                 <th>Quantity</th>
+//                 <th>Total</th>
+//                 <th>Action</th>
+//             </tr>
+//         </thead>
+//         <tbody>
+//             ${cart.map(item => `
+//                 <tr>
+//                     <td data-label="Item">${item.name}</td>
+//                     <td data-label="Price">₹${parseFloat(item.price).toFixed(2)}</td>
+//                     <td data-label="Quantity">
+//                         <div class="cart-item-quantity">
+//                             <button class="quantity-btn minus" data-id="${item.id}">-</button>
+//                             <span>${item.quantity}</span>
+//                             <button class="quantity-btn plus" data-id="${item.id}">+</button>
+//                         </div>
+//                     </td>
+//                     <td data-label="Total">₹${(item.price * item.quantity).toFixed(2)}</td>
+//                     <td data-label="Action">
+//                         <button class="remove-item-btn" data-id="${item.id}">
+//                             <i class="fas fa-trash"></i>
+//                         </button>
+//                     </td>
+//                 </tr>
+//             `).join('')}
+//         </tbody>
+//     `;
+//     container.appendChild(table);
+    
+//     // Calculate totals
+//     let subtotal = 0;
+//     cart.forEach(item => {
+//         const itemTotal = parseFloat(item.price) * item.quantity;
+//         if (!isNaN(itemTotal)) {
+//             subtotal += itemTotal;
+//         }
+//     });
+//     const tax = subtotal * 0.05;
+//     const total = subtotal + tax;
+    
+//     // Update summary
+//     document.querySelector('.subtotal').textContent = `₹${subtotal.toFixed(2)}`;
+//     document.querySelector('.tax').textContent = `₹${tax.toFixed(2)}`;
+//     document.querySelector('.total-amount').textContent = `₹${total.toFixed(2)}`;
+    
+//     // Add event listeners
+//     document.querySelectorAll('.quantity-btn.minus').forEach(button => {
+//         button.addEventListener('click', () => updateCartItemQuantity(button.getAttribute('data-id'), -1));
+//     });
+    
+//     document.querySelectorAll('.quantity-btn.plus').forEach(button => {
+//         button.addEventListener('click', () => updateCartItemQuantity(button.getAttribute('data-id'), 1));
+//     });
+    
+//     document.querySelectorAll('.remove-item-btn').forEach(button => {
+//         button.addEventListener('click', () => removeCartItem(button.getAttribute('data-id')));
+//     });
+    
+//     // Clear cart button
+//     const clearBtn = document.querySelector('.clear-cart-btn');
+//     clearBtn.onclick = null;
+//     clearBtn.addEventListener('click', () => {
+//         if (cart.length > 0 && confirm('Are you sure you want to clear your cart?')) {
+//             localStorage.removeItem('restaurantCart');
+//             updateCartUI();
+//         }
+//     });
+    
+//     // Checkout button
+//     const checkoutBtn = document.querySelector('.checkout-btn');
+//     checkoutBtn.onclick = null;
+//     checkoutBtn.addEventListener('click', () => {
+//         if (cart.length === 0) {
+//             alert('Your cart is empty!');
+//             return;
+//         }
+//         const orderSummary = cart.map(item => 
+//             `${item.name} x${item.quantity}: ₹${(item.price * item.quantity).toFixed(2)}`
+//         ).join('\n');
+//         alert(`Order Summary:\n\n${orderSummary}\n\nSubtotal: ₹${subtotal.toFixed(2)}\nTax (5%): ₹${tax.toFixed(2)}\nTotal: ₹${total.toFixed(2)}\n\nProceeding to checkout...`);
+//     });
+// }
+
+// // Update item quantity
+// function updateCartItemQuantity(itemId, change) {
+//     let cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+//     const itemIndex = cart.findIndex(item => item.id === itemId);
+    
+//     if (itemIndex !== -1) {
+//         cart[itemIndex].quantity += change;
+//         if (cart[itemIndex].quantity <= 0) {
+//             cart.splice(itemIndex, 1);
+//         }
+//         localStorage.setItem('restaurantCart', JSON.stringify(cart));
+//         updateCartUI();
+//     }
+// }
+
+// // Remove item from cart
+// function removeCartItem(itemId) {
+//     let cart = JSON.parse(localStorage.getItem('restaurantCart')) || [];
+//     cart = cart.filter(item => item.id !== itemId);
+//     localStorage.setItem('restaurantCart', JSON.stringify(cart));
+//     updateCartUI();
+// }
+
+// // Show notification
+// function showCartNotification(itemName) {
+//     const notification = document.createElement('div');
+//     notification.className = 'cart-notification';
+//     notification.innerHTML = `
+//         <i class="fas fa-check-circle"></i>
+//         <span>${itemName} added to cart</span>
+//     `;
+//     document.body.appendChild(notification);
+    
+//     const style = document.createElement('style');
+//     style.textContent = `
+//         .cart-notification {
+//             position: fixed;
+//             bottom: 20px;
+//             right: 20px;
+//             background-color: var(--primary-color);
+//             color: white;
+//             padding: 15px 20px;
+//             border-radius: var(--border-radius);
+//             box-shadow: var(--shadow);
+//             z-index: 1000;
+//             display: flex;
+//             align-items: center;
+//             gap: 10px;
+//             animation: slideIn 0.3s ease-out;
+//         }
+//         @keyframes slideIn {
+//             from { transform: translateX(100%); }
+//             to { transform: translateX(0); }
+//         }
+//         @keyframes slideOut {
+//             from { transform: translateX(0); }
+//             to { transform: translateX(100%); }
+//         }
+//     `;
+//     document.head.appendChild(style);
+    
+//     setTimeout(() => {
+//         notification.style.animation = 'slideOut 0.3s ease-out';
+//         setTimeout(() => {
+//             notification.remove();
+//             style.remove();
+//         }, 300);
+//     }, 3000);
+// }
+</script>
+{% endblock %}
+
+
+
+

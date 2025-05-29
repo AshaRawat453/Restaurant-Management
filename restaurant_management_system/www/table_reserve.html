@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Table Reservation System</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+--primary: #6e5727;
+--primary-light: #f3e9d2;
+--secondary: #8b4513;
+--secondary-light: #e8d5b5;
+--accent: #d4a373;
+--success: #28a745;
+--danger: #dc3545;
+--warning: #ffc107;
+--light: #f9f5eb;
+--dark: #343a40;
+--text: #4a4a4a;
+}
+* {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+body {
+background-color: var(--light);
+color: var(--text);
+line-height: 1.6;
+min-height: 100vh;
+}
+header {
+background-color: var(--secondary);
+color: white;
+padding: 1.5rem;
+text-align: center;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.container {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2rem;
+padding: 2rem;
+max-width: 1400px;
+margin: 0 auto;
+}
+.panel {
+background: white;
+border-radius: 12px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+padding: 1.5rem;
+transition: all 0.3s ease;
+border: 1px solid var(--primary-light);
+display: flex; /* Use flexbox for column layout */
+flex-direction: column;
+}
+.panel-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1.5rem;
+padding-bottom: 0.75rem;
+border-bottom: 2px solid var(--primary-light);
+}
+.panel:hover {
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+h2 {
+color: var(--primary);
+font-size: 1.5rem;
+}
+.filters {
+display: flex;
+gap: 1rem;
+margin-bottom: 1.5rem;
+flex-wrap: wrap;
+}
+.filter-group {
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+label {
+font-size: 0.9rem;
+color: var(--primary);
+font-weight: 600;
+}
+select, input {
+padding: 0.5rem 1rem;
+border-radius: 6px;
+border: 1px solid var(--primary-light);
+background-color: white;
+color: var(--text);
+font-size: 0.9rem;
+min-width: 120px; /* Ensure minimum width for filters */
+}
+button {
+padding: 0.5rem 1rem;
+border-radius: 6px;
+border: none;
+background-color: var(--primary);
+color: white;
+font-weight: 600;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+button:hover {
+background-color: var(--secondary);
+transform: translateY(-1px);
+}
+button:active {
+transform: translateY(0);
+}
+.button-confirm {
+background-color: var(--success);
+margin-top: auto; /* Push to the bottom */
+width: 100%;
+padding: 0.75rem;
+}
+.button-confirm:hover {
+background-color: #218838;
+}
+.button-confirm:disabled {
+background-color: #cccccc;
+cursor: not-allowed;
+}
+#reservations-container, #tables-container {
+flex-grow: 1; /* Allow containers to grow and take available space */
+overflow-y: auto; /* Add scroll if content overflows */
+padding-right: 5px; /* Add some padding for scrollbar */
+}
+.reservation-item, .dynamic-table-list {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 1rem;
+margin-bottom: 0.75rem;
+border-radius: 8px;
+background-color: var(--primary-light);
+transition: all 0.2s ease;
+cursor: grab;
+position: relative;
+}
+.reservation-details {
+display: flex;
+flex-direction: column;
+gap: 0.25rem;
+}
+.reservation-meta {
+display: flex;
+gap: 1rem;
+font-size: 0.85rem;
+color: var(--secondary);
+flex-wrap: wrap; /* Allow meta items to wrap */
+}
+.reservation-item:hover, .dynamic-table-list:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+.reservation-item:active, .dynamic-table-list:active {
+cursor: grabbing;
+}
+.guest-count {
+background-color: var(--primary);
+color: white;
+padding: 0.25rem 0.75rem;
+border-radius: 20px;
+font-size: 0.85rem;
+font-weight: 600;
+display: flex;
+align-items: center;
+gap: 0.25rem;
+flex-shrink: 0; /* Prevent shrinking */
+}
+.dynamic-table-list .guest-count {
+background-color: var(--secondary);
+}
+.table-status {
+position: absolute;
+top: -8px;
+right: -8px;
+width: 24px;
+height: 24px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 0.7rem;
+color: white;
+}
+.status-available {
+background-color: var(--success);
+}
+.status-reserved {
+background-color: var(--danger);
+}
+.status-pending {
+background-color: var(--warning);
+}
+/* Drag and drop states */
+[aria-grabbed="true"] {
+opacity: 0.7;
+box-shadow: 0 0 0 2px var(--primary);
+}
+.drag-over {
+background-color: var(--accent) !important;
+}
+.assigned-reservation {
+background-color: var(--secondary-light);
+border-left: 4px solid var(--secondary);
+}
+.assigned-reservation .guest-count {
+background-color: var(--secondary);
+}
+.pending-reservation {
+background-color: #fff3cd;
+border-left: 4px solid var(--warning); /* Corrected border style */
+}
+.pending-reservation .guest-count {
+background-color: var(--warning);
+color: var(--dark);
+}
+.empty-state {
+text-align: center;
+padding: 2rem;
+color: var(--text);
+opacity: 0.7;
+}
+footer {
+background-color: var(--secondary);
+color: white;
+text-align: center;
+padding: 1.5rem;
+margin-top: 2rem;
+}
+.footer-content {
+max-width: 1200px;
+margin: 0 auto;
+display: flex;
+justify-content: space-between;
+align-items: center;
+}
+.footer-links {
+display: flex;
+gap: 1.5rem;
+}
+.footer-links a {
+color: white;
+text-decoration: none;
+transition: all 0.2s ease;
+}
+.footer-links a:hover {
+color: var(--primary-light);
+}
+/* Responsive adjustments */
+@media (max-width: 768px) {
+.container {
+grid-template-columns: 1fr;
+}
+.filters {
+flex-direction: column;
+}
+.footer-content {
+flex-direction: column;
+gap: 1rem;
+}
+}
+</style>
+</head>
+<body>
+<header>
+<h1><i class="fas fa-utensils"></i> Restaurant Table Reservation System</h1>
+</header>
+<div class="container" role="main">
+<section class="panel" id="reservation-list" aria-label="Reservations list" tabindex="0">
+<div class="panel-header">
+<h2><i class="fas fa-calendar-alt"></i> Reservations</h2>
+</div>
+<div class="filters">
+<div class="filter-group">
+<label for="date-filter">Date</label>
+<input type="date" id="date-filter">
+</div>
+<div class="filter-group">
+<label for="time-filter">Start Time</label>
+<input type="time" id="time-filter" min="00:00" max="23:59" step="300"> {# Allow full day, 5 min steps #}
+</div>
+<div class="filter-group">
+<label for="end-time-filter">End Time</label>
+<input type="time" id="end-time-filter" min="00:00" max="23:59" step="300"> {# Allow full day, 5 min steps #}
+</div>
+<div class="filter-group">
+<label for="guest-filter">Guests</label>
+<select id="guest-filter">
+<option value="all">All</option>
+<option value="1-2">1-2</option>
+<option value="3-4">3-4</option>
+<option value="5-6">5-6</option>
+<option value="7+">7+</option>
+</select>
+</div>
+<div class="filter-group">
+<label for="status-filter">Status</label>
+<select id="status-filter">
+<option value="all">All</option>
+<option value="unassigned">Unassigned</option>
+<option value="assigned">Assigned</option>
+<option value="pending">Pending Confirmation</option>
+</select>
+</div>
+</div>
+<div id="reservations-container">
+{# Use Jinja loop to render initial reservations #}
+{% if reservations %}
+{% for reservation in reservations %}
+<div class="reservation-item {% if reservation.assigned_table_id %}assigned-reservation{% elif reservation.pending %}pending-reservation{% endif %}"
+data-id="{{ reservation.id }}"
+data-guests="{{ reservation.guests }}"
+data-date="{{ reservation.reservation_date }}" {# Using reservation_date as per your snippet #}
+data-time="{{ reservation.reservation_start_time}}" {# Using reservation_start_time as per your snippet #}
+data-duration="{{ reservation.duration }}" {# Ensure duration is passed #}
+{% if reservation.assigned_table_id %}data-assigned-table-id="{{ reservation.assigned_table_id }}"{% endif %} {# Pass assigned table ID #}
+{% if reservation.pending %}data-pending="true"{% endif %} {# Indicate pending status #}
+draggable="true"
+role="option"
+aria-grabbed="false">
+<div class="reservation-details">
+<strong>{{ reservation.customer }}</strong>
+<div class="reservation-meta">
+{# Display time using reservation_start_time as per your snippet #}
+<span><i class="far fa-clock"></i> {{ reservation.reservation_start_time }} - <span class="reservation-end-time"></span></span> {# Placeholder for JS calculated end time #}
+{# Display date using reservation_date as per your snippet #}
+<span><i class="far fa-calendar"></i> {{ reservation.reservation_date }}</span>
+{% if reservation.assigned_table_id %}
+{# Display table name if assigned_table_id is present. Assumes table_name is available in reservation object or looked up. #}
+<span><i class="fas fa-chair"></i> Table {{ reservation.assigned_table_name or 'Assigned' }}</span>
+{% elif reservation.pending %}
+<span><i class="fas fa-hourglass-half"></i> Pending</span>
+{% endif %}
+</div>
+</div>
+<span class="guest-count" aria-label="Number of guests"><i class="fas fa-user-friends"></i> {{ reservation.guests }}</span>
+</div>
+{% endfor %}
+{% else %}
+<div class="empty-state">
+<i class="far fa-calendar-times fa-2x"></i>
+<p>No reservations found</p>
+</div>
+{% endif %}
+</div>
+</section>
+<section class="panel" id="table-list" aria-label="Tables list" tabindex="0">
+<div class="panel-header">
+<h2><i class="fas fa-chair"></i> Tables</h2>
+</div>
+<div class="filters">
+<div class="filter-group">
+<label for="capacity-filter">Capacity</label>
+<select id="capacity-filter">
+<option value="all">All</option>
+<option value="1-2">1-2</option>
+<option value="3-4">3-4</option>
+<option value="5-6">5-6</option>
+<option value="7+">7+</option>
+</select>
+</div>
+<div class="filter-group">
+<label for="table-status-filter">Status</label>
+<select id="table-status-filter">
+<option value="all">All</option>
+<option value="available">Available</option>
+<option value="reserved">Reserved</option>
+<option value="pending">Pending</option>
+</select>
+</div>
+</div>
+<div id="tables-container">
+{# Use Jinja loop to render initial tables #}
+{% if tables %}
+{% for table in tables %}
+<div class="dynamic-table-list"
+data-id="{{ table.id }}"
+data-capacity="{{ table.seating_capacity }}"
+{# Ensure data-reservations is always present and defaults to empty list if table.reservations is empty or null #}
+data-reservations="{{ (table.reservations | default([])) | tojson }}"
+{% if table.assigned_reservation_id %}data-assigned-reservation-id="{{ table.assigned_reservation_id }}"{% endif %} {# Pass assigned reservation ID #}
+{% if table.pending_reservation_id %}data-pending-reservation-id="{{ table.pending_reservation_id }}"{% endif %} {# Pass pending reservation ID #}
+draggable="true" {# Keep draggable for potential future features or visual consistency #}
+role="option"
+aria-grabbed="false">
+<span>{{ table.table_name }}</span>
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+{# Determine status based on assigned/pending reservation IDs #}
+{% set status_class = 'status-available' %}
+{% set status_icon = '<i class="fas fa-check"></i>' %}
+{% set status_title = 'Available' %}
+{% if table.assigned_reservation_id %}
+{% set status_class = 'status-reserved' %}
+{% set status_icon = '<i class="fas fa-times"></i>' %}
+{% set status_title = 'Reserved' %}
+{% elif table.pending_reservation_id %}
+{% set status_class = 'status-pending' %}
+{% set status_icon = '<i class="fas fa-hourglass-half"></i>' %}
+{% set status_title = 'Pending' %}
+{% endif %}
+<span class="table-status {{ status_class }}" title="{{ status_title }}">{{ status_icon | safe }}</span>
+<span class="guest-count"><i class="fas fa-user-friends"></i> {{ table.seating_capacity }}</span>
+</div>
+</div>
+{% endfor %}
+{% else %}
+<div class="empty-state">
+<i class="fas fa-chair fa-2x"></i>
+<p>No tables configured</p>
+</div>
+{% endif %}
+</div>
+<button id="confirm-reservation" class="button-confirm" disabled>
+<i class="fas fa-check-circle"></i> Confirm Reservation
+</button>
+</section>
+</div>
+
+<footer>
+<div class="footer-content">
+<p>&copy; 2023 Restaurant Reservation System. All rights reserved.</p>
+<div class="footer-links">
+<a href="#"><i class="fas fa-info-circle"></i> About</a>
+<a href="#"><i class="fas fa-envelope"></i> Contact</a>
+<a href="#"><i class="fas fa-shield-alt"></i> Privacy</a>
+</div>
+</div>
+</footer>
+
+<script>
+// --- State Management ---
+// The state will be initialized by reading the data from the DOM
+// which was rendered by the Jinja template.
+const state = {
+reservations: [],
+tables: [],
+pendingAssignments: [] // { reservationId: '...', tableId: '...', date: '...', startTime: '...', endTime: '...' }
+};
+
+// --- DOM Elements ---
+const dateFilter = document.getElementById('date-filter');
+const timeFilter = document.getElementById('time-filter');
+const endTimeFilter = document.getElementById('end-time-filter');
+const guestFilter = document.getElementById('guest-filter');
+const statusFilter = document.getElementById('status-filter');
+const capacityFilter = document.getElementById('capacity-filter');
+const tableStatusFilter = document.getElementById('table-status-filter');
+const confirmReservationBtn = document.getElementById('confirm-reservation');
+const reservationsContainer = document.getElementById('reservations-container');
+const tablesContainer = document.getElementById('tables-container');
+
+// --- Helper Functions ---
+
+/**
+* Converts a time string (HH:MM) to minutes since midnight.
+* @param {string} timeStr - The time string.
+* @returns {number} Minutes since midnight.
+*/
+function timeToMinutes(timeStr) {
+if (!timeStr) return 0;
+const [hours, minutes] = timeStr.split(':').map(Number);
+return hours * 60 + minutes;
+}
+
+/**
+* Converts minutes since midnight back to a time string (HH:MM).
+* @param {number} minutes - Minutes since midnight.
+* @returns {string} Time string (HH:MM).
+*/
+function minutesToTime(minutes) {
+const hrs = Math.floor(minutes / 60);
+const mins = minutes % 60;
+return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+}
+
+/**
+* Calculates the end time based on a start time and duration.
+* @param {string} startTime - The start time (HH:MM).
+* @param {number} duration - The duration in minutes.
+* @returns {string} The end time (HH:MM).
+*/
+function calculateEndTime(startTime, duration) {
+const startMinutes = timeToMinutes(startTime);
+const endMinutes = startMinutes + duration;
+// Handle times crossing midnight if necessary (though not typical for restaurant reservations)
+return minutesToTime(endMinutes);
+}
+
+/**
+* Checks if two time intervals overlap.
+* @param {string} start1 - Start time of interval 1 (HH:MM).
+* @param {string} end1 - End time of interval 1 (HH:MM).
+* @param {string} start2 - Start time of interval 2 (HH:MM).
+* @param {string} end2 - End time of interval 2 (HH:MM).
+* @returns {boolean} True if intervals overlap, false otherwise.
+*/
+function isTimeOverlapping(start1, end1, start2, end2) {
+const start1Mins = timeToMinutes(start1);
+const end1Mins = timeToMinutes(end1);
+const start2Mins = timeToMinutes(start2);
+const end2Mins = timeToMinutes(end2);
+// Overlap occurs if the start of one interval is before the end of the other, AND
+// the end of the first interval is after the start of the other.
+return (start1Mins < end2Mins) && (end1Mins > start2Mins);
+}
+
+/**
+* Populates the state object by reading data from the initially rendered DOM.
+*/
+function populateStateFromDOM() {
+console.log("Populating state from DOM...");
+// Read reservations from DOM
+document.querySelectorAll('.reservation-item').forEach(item => {
+console.log("Reading reservation data from DOM element:", item);
+const id = item.dataset.id;
+const guests = parseInt(item.dataset.guests);
+// Corrected: Reading data-date and data-time as per your Jinja snippet
+const date = item.dataset.date;
+const time = item.dataset.time;
+const duration = parseInt(item.dataset.duration);
+// Read assigned table ID from data attribute (rendered by Jinja)
+const assigned_table_id = item.dataset.assignedTableId || null;
+// Read pending status from data attribute (rendered by Jinja)
+const pending = item.dataset.pending === 'true';
+
+// Get customer name - assuming it's the strong tag content
+const customer = item.querySelector('.reservation-details strong')?.textContent || 'Unknown Customer';
+
+console.log(`Read data-id: ${id}`);
+console.log(`Read data-guests: ${guests}`);
+console.log(`Read data-date: "${date}"`); // Log with quotes to see if it's empty
+console.log(`Read data-time: "${time}"`); // Log with quotes to see if it's empty
+console.log(`Read data-duration: ${duration}`);
+console.log(`Read data-assigned-table-id: ${assigned_table_id}`);
+console.log(`Read data-pending: ${pending}`);
+console.log(`Read customer: ${customer}`);
+
+
+state.reservations.push({
+id,
+customer,
+guests,
+date,
+time,
+duration,
+assigned_table_id: assigned_table_id,
+pending: pending
+});
+
+// Update the end time display in the DOM
+const endTimeSpan = item.querySelector('.reservation-meta .reservation-end-time');
+if (endTimeSpan) {
+// Ensure date, time, and duration are valid before calculating end time
+if (date && time && !isNaN(duration)) {
+const calculatedEndTime = calculateEndTime(time, duration);
+endTimeSpan.textContent = calculatedEndTime;
+console.log(`Calculated end time for reservation ${id}: ${calculatedEndTime}`);
+} else {
+endTimeSpan.textContent = 'N/A'; // Indicate if data is missing
+console.warn(`Cannot calculate end time for reservation ${id}. Date: "${date}", Time: "${time}", Duration: ${duration}`);
+}
+}
+});
+
+// Read tables from DOM
+document.querySelectorAll('.dynamic-table-list').forEach(item => {
+console.log("Reading table data from DOM element:", item);
+const id = item.dataset.id;
+const capacity = parseInt(item.dataset.capacity);
+const name = item.querySelector('span')?.textContent || `Table ${id}`;
+// Read reservation history from data attribute (passed as JSON by Jinja)
+// Added check to ensure reservations is an array even if parsing fails or data is missing
+let reservations = [];
+try {
+if (item.dataset.reservations) {
+reservations = JSON.parse(item.dataset.reservations);
+// Ensure it's an array after parsing
+if (!Array.isArray(reservations)) {
+console.error(`Data-reservations for table ${id} is not an array:`, item.dataset.reservations);
+reservations = []; // Default to empty array if not an array
+}
+}
+} catch (e) {
+console.error(`Failed to parse data-reservations for table ${id}:`, e, item.dataset.reservations);
+reservations = []; // Default to empty array on parse error
+}
+
+
+// Read assigned and pending reservation IDs from data attributes (rendered by Jinja)
+const assigned_reservation_id = item.dataset.assignedReservationId || null;
+const pending_reservation_id = item.dataset.pendingReservationId || null;
+
+console.log(`Read table id: ${id}`);
+console.log(`Read table capacity: ${capacity}`);
+console.log(`Read table name: ${name}`);
+console.log(`Read assigned_reservation_id: ${assigned_reservation_id}`);
+console.log(`Read pending_reservation_id: ${pending_reservation_id}`);
+console.log(`Read reservations_history_count: ${reservations.length}`);
+
+
+state.tables.push({
+id,
+table_name: name,
+seating_capacity: capacity,
+assigned_reservation_id: assigned_reservation_id,
+pending_reservation_id: pending_reservation_id,
+reservations: reservations // History of confirmed reservations (now guaranteed to be an array)
+});
+});
+
+// After populating state, update pendingAssignments based on initial state
+state.reservations.forEach(res => {
+if (res.pending) {
+// Find the table that has this reservation pending
+const pendingTable = state.tables.find(t => t.pending_reservation_id === res.id);
+if (pendingTable) {
+const endTime = calculateEndTime(res.time, res.duration);
+state.pendingAssignments.push({
+reservationId: res.id,
+tableId: pendingTable.id,
+date: res.date,
+startTime: res.time,
+endTime: endTime
+});
+} else {
+console.warn(`Reservation ${res.id} is marked as pending but no table found with pending_reservation_id matching this ID.`);
+}
+}
+});
+
+console.log("State populated from DOM:", state);
+console.log("Initial Reservations State:", state.reservations);
+console.log("Initial Tables State:", state.tables);
+console.log("Initial Pending Assignments:", state.pendingAssignments);
+}
+
+
+/**
+* Renders the list of reservations based on the current state.
+* This function clears the container and rebuilds the list from the state.
+*/
+function renderReservations() {
+console.log("Rendering reservations...");
+reservationsContainer.innerHTML = ''; // Clear current list
+
+if (state.reservations.length === 0) {
+const emptyState = document.createElement('div');
+emptyState.className = 'empty-state';
+emptyState.innerHTML = `
+<i class="far fa-calendar-times fa-2x"></i>
+<p>No reservations found</p>
+`;
+reservationsContainer.appendChild(emptyState);
+// Remove any filter-specific empty state if present
+const filterEmptyState = reservationsContainer.querySelector('.empty-state:not(:first-child)');
+if(filterEmptyState) filterEmptyState.remove();
+return;
+}
+
+state.reservations.forEach(reservation => {
+const reservationElement = document.createElement('div');
+let className = 'reservation-item';
+if (reservation.assigned_table_id) {
+className += ' assigned-reservation';
+} else if (reservation.pending) {
+className += ' pending-reservation';
+}
+reservationElement.className = className;
+reservationElement.dataset.id = reservation.id;
+reservationElement.dataset.guests = reservation.guests;
+reservationElement.dataset.date = reservation.date;
+reservationElement.dataset.time = reservation.time;
+reservationElement.dataset.duration = reservation.duration;
+// Add data attributes for assigned/pending table IDs if they exist in state
+if (reservation.assigned_table_id) {
+reservationElement.dataset.assignedTableId = reservation.assigned_table_id;
+}
+if (reservation.pending) {
+reservationElement.dataset.pending = 'true';
+}
+
+
+reservationElement.draggable = true;
+reservationElement.setAttribute('role', 'option');
+reservationElement.setAttribute('aria-grabbed', 'false');
+
+// Ensure date, time, and duration are valid before calculating end time for display
+let endTimeDisplay = 'N/A';
+if (reservation.date && reservation.time && !isNaN(reservation.duration)) {
+endTimeDisplay = calculateEndTime(reservation.time, reservation.duration);
+}
+
+
+let tableInfo = '';
+if (reservation.assigned_table_id) {
+const table = state.tables.find(t => t.id === reservation.assigned_table_id);
+tableInfo = `<span><i class="fas fa-chair"></i> Table ${table?.table_name || 'Assigned'}</span>`;
+} else if (reservation.pending) {
+const pendingAssignment = state.pendingAssignments.find(pa => pa.reservationId === reservation.id);
+const table = state.tables.find(t => t.id === pendingAssignment?.tableId);
+tableInfo = `<span><i class="fas fa-hourglass-half"></i> Pending: ${table?.table_name || 'Table'}</span>`;
+}
+
+reservationElement.innerHTML = `
+<div class="reservation-details">
+<strong>${reservation.customer}</strong>
+<div class="reservation-meta">
+<span><i class="far fa-clock"></i> ${reservation.time} - ${endTimeDisplay}</span>
+<span><i class="far fa-calendar"></i> ${reservation.date}</span>
+${tableInfo}
+</div>
+</div>
+<span class="guest-count" aria-label="Number of guests"><i class="fas fa-user-friends"></i> ${reservation.guests}</span>
+`;
+
+reservationsContainer.appendChild(reservationElement);
+});
+
+// Add drag event listeners to all reservation items
+document.querySelectorAll('.reservation-item').forEach(item => {
+item.addEventListener('dragstart', handleDragStart);
+item.addEventListener('dragend', handleDragEnd);
+});
+
+// Apply current filters after rendering
+filterReservations();
+console.log("Reservations rendered. Current state:", state.reservations);
+}
+
+/**
+* Renders the list of tables based on the current state.
+* This function clears the container and rebuilds the list from the state.
+*/
+function renderTables() {
+console.log("Rendering tables...");
+tablesContainer.innerHTML = ''; // Clear current list
+
+if (state.tables.length === 0) {
+const emptyState = document.createElement('div');
+emptyState.className = 'empty-state';
+emptyState.innerHTML = `
+<i class="fas fa-chair fa-2x"></i>
+<p>No tables configured</p>
+`;
+tablesContainer.appendChild(emptyState);
+// Remove any filter-specific empty state if present
+const filterEmptyState = tablesContainer.querySelector('.empty-state:not(:first-child)');
+if(filterEmptyState) filterEmptyState.remove();
+return;
+}
+
+state.tables.forEach(table => {
+const tableElement = document.createElement('div');
+tableElement.className = 'dynamic-table-list';
+tableElement.dataset.id = table.id;
+tableElement.dataset.capacity = table.seating_capacity;
+// Pass reservation history as JSON data attribute
+tableElement.dataset.reservations = JSON.stringify(table.reservations);
+// Add data attributes for assigned/pending reservation IDs if they exist in state
+if (table.assigned_reservation_id) {
+tableElement.dataset.assignedReservationId = table.assigned_reservation_id;
+}
+if (table.pending_reservation_id) {
+tableElement.dataset.pendingReservationId = table.pending_reservation_id;
+}
+
+
+tableElement.draggable = true; // Keep draggable for potential future features or visual consistency
+tableElement.setAttribute('role', 'option');
+tableElement.setAttribute('aria-grabbed', 'false'); // Tables are drop targets, not grabbed
+
+let statusClass = 'status-available';
+let statusIcon = '<i class="fas fa-check"></i>';
+let statusTitle = 'Available';
+
+if (table.assigned_reservation_id) {
+statusClass = 'status-reserved';
+statusIcon = '<i class="fas fa-times"></i>';
+statusTitle = 'Reserved';
+} else if (table.pending_reservation_id) {
+statusClass = 'status-pending';
+statusIcon = '<i class="fas fa-hourglass-half"></i>';
+statusTitle = 'Pending';
+}
+
+tableElement.innerHTML = `
+<span>${table.table_name}</span>
+<div style="display: flex; align-items: center; gap: 0.5rem;">
+<span class="table-status ${statusClass}" title="${statusTitle}">${statusIcon}</span>
+<span class="guest-count"><i class="fas fa-user-friends"></i> ${table.seating_capacity}</span>
+</div>
+`;
+
+tablesContainer.appendChild(tableElement);
+});
+
+// Add drop event listeners to all table items
+document.querySelectorAll('.dynamic-table-list').forEach(item => {
+// item.addEventListener('dragstart', handleDragStart); // Tables are not draggable
+// item.addEventListener('dragend', handleDragEnd); // Tables are not draggable
+item.addEventListener('dragover', handleDragOver);
+item.addEventListener('dragenter', handleDragEnter);
+item.addEventListener('dragleave', handleDragLeave);
+item.addEventListener('drop', handleDrop);
+});
+
+// Apply current filters after rendering
+filterTables();
+console.log("Tables rendered. Current state:", state.tables);
+}
+
+// --- Drag and Drop Functions ---
+
+/**
+* Handles the start of a drag operation.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDragStart(e) {
+console.log("Drag started for:", e.target.dataset.id);
+// Set the data to be transferred - the ID of the dragged element
+e.dataTransfer.setData('text/plain', e.target.dataset.id);
+// Add visual feedback
+e.target.setAttribute('aria-grabbed', 'true');
+e.target.style.opacity = '0.4';
+}
+
+/**
+* Handles the end of a drag operation.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDragEnd(e) {
+console.log("Drag ended for:", e.target.dataset.id);
+// Remove visual feedback
+e.target.setAttribute('aria-grabbed', 'false');
+e.target.style.opacity = '1';
+// Clean up any drag-over classes from tables if drag ended elsewhere
+document.querySelectorAll('.dynamic-table-list.drag-over').forEach(table => {
+table.classList.remove('drag-over');
+});
+}
+
+/**
+* Allows a drop to occur by preventing the default behavior.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDragOver(e) {
+e.preventDefault(); // Necessary to allow dropping
+}
+
+/**
+* Handles a dragged item entering a drop target.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDragEnter(e) {
+e.preventDefault();
+// Add visual feedback to the drop target
+e.target.closest('.dynamic-table-list')?.classList.add('drag-over');
+}
+
+/**
+* Handles a dragged item leaving a drop target.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDragLeave(e) {
+// Remove visual feedback from the drop target
+e.target.closest('.dynamic-table-list')?.classList.remove('drag-over');
+}
+
+/**
+* Handles a dragged item being dropped onto a target.
+* @param {DragEvent} e - The drag event.
+*/
+function handleDrop(e) {
+e.preventDefault();
+// Remove visual feedback from the drop target
+const tableElement = e.target.closest('.dynamic-table-list');
+if (tableElement) {
+tableElement.classList.remove('drag-over');
+} else {
+console.warn("Dropped outside a table element.");
+return; // Dropped outside a table element
+}
+
+
+// Get the ID of the dragged element (reservation)
+const draggedId = e.dataTransfer.getData('text/plain');
+console.log("Dropped reservation ID:", draggedId, "onto table ID:", tableElement.dataset.id);
+
+// Find the reservation object in the state
+const reservation = state.reservations.find(r => r.id === draggedId);
+
+// Find the table object in the state
+const table = state.tables.find(t => t.id === tableElement.dataset.id);
+
+if (!reservation) {
+console.error("Dragged reservation not found in state:", draggedId);
+return;
+}
+if (!table) {
+console.error("Dropped table not found in state:", tableElement.dataset.id);
+return;
+}
+
+
+// If both reservation and table are found, attempt to assign
+assignReservationToTable(reservation, table);
+}
+
+/**
+* Attempts to assign a reservation to a table, setting a pending status.
+* Performs validation checks before setting pending.
+* @param {object} reservation - The reservation object from the state.
+* @param {object} table - The table object from the state.
+*/
+function assignReservationToTable(reservation, table) {
+console.log(`Attempting to assign Reservation ${reservation.id} to Table ${table.id}`);
+console.log("Reservation state before assignment:", { ...reservation });
+console.log("Table state before assignment:", { ...table });
+console.log("Pending assignments before assignment:", [...state.pendingAssignments]);
+
+// --- Validation Checks ---
+
+// 1. Check if reservation is already assigned
+if (reservation.assigned_table_id) {
+const assignedTable = state.tables.find(t => t.id === reservation.assigned_table_id);
+alert(`This reservation is already assigned to ${assignedTable?.table_name || 'a table'}!`);
+console.warn("Assignment failed: Reservation already assigned.");
+return;
+}
+
+// 2. Check capacity
+if (reservation.guests > table.seating_capacity) {
+alert(`${table.table_name} cannot accommodate ${reservation.guests} guests (max ${table.seating_capacity})!`);
+console.warn("Assignment failed: Capacity mismatch.");
+return;
+}
+
+// 3. Check for time conflicts on the target table
+// This is the line causing the error if table.reservations is null/undefined
+const reservationEndTime = calculateEndTime(reservation.time, reservation.duration);
+const hasConflict = table.reservations.some(res => {
+// Check for conflicts on the same date
+return res.date === reservation.date &&
+isTimeOverlapping(res.startTime, res.endTime, reservation.time, reservationEndTime);
+});
+
+if (hasConflict) {
+alert(`${table.table_name} is already reserved during the selected time slot (${reservation.time} - ${reservationEndTime}) on ${reservation.date}!`);
+console.warn("Assignment failed: Time conflict.");
+return;
+}
+
+// 4. Check if the target table has a pending reservation already
+if (table.pending_reservation_id && table.pending_reservation_id !== reservation.id) {
+const pendingRes = state.reservations.find(r => r.id === table.pending_reservation_id);
+alert(`${table.table_name} already has a pending reservation for ${pendingRes?.customer || 'another party'}!`);
+console.warn("Assignment failed: Table has pending reservation.");
+return;
+}
+
+// --- If all checks pass, set pending assignment ---
+
+console.log("Validation passed. Setting pending assignment.");
+
+// Remove any existing pending assignment for this reservation from the state
+state.pendingAssignments = state.pendingAssignments.filter(a => a.reservationId !== reservation.id);
+
+// Remove pending status from any table that previously had this reservation pending
+state.tables.forEach(t => {
+if (t.pending_reservation_id === reservation.id) {
+t.pending_reservation_id = null;
+}
+});
+
+// Set the pending status on the reservation and table objects in the state
+reservation.pending = true;
+table.pending_reservation_id = reservation.id;
+
+// Add the new pending assignment to the state
+state.pendingAssignments.push({
+reservationId: reservation.id,
+tableId: table.id,
+date: reservation.date,
+startTime: reservation.time,
+endTime: reservationEndTime
+});
+
+console.log("State after setting pending:", {
+reservation: { ...reservation },
+table: { ...table },
+pendingAssignments: [...state.pendingAssignments]
+});
+
+// Re-render the UI to reflect the pending status
+renderReservations();
+renderTables();
+
+// Enable the confirm button if there are pending assignments
+confirmReservationBtn.disabled = state.pendingAssignments.length === 0;
+
+console.log(`Reservation ${reservation.id} pending assignment to Table ${table.id}`);
+}
+
+/**
+* Finalizes all pending reservation assignments.
+*/
+function confirmReservations() {
+console.log("Confirm button clicked.");
+console.log("Pending assignments:", [...state.pendingAssignments]);
+
+if (state.pendingAssignments.length === 0) {
+alert('No pending reservations to confirm!');
+console.warn("Confirm failed: No pending assignments.");
+return;
+}
+
+// Use a more informative confirmation message
+const confirmationMessage = `Confirm the following pending assignments?\n\n${state.pendingAssignments.map(pa => {
+const res = state.reservations.find(r => r.id === pa.reservationId);
+const tbl = state.tables.find(t => t.id === pa.tableId);
+return `- ${res?.customer || 'Reservation'} (${res?.time} on ${res?.date}) to ${tbl?.table_name || 'Table'}`;
+}).join('\n')}\n\nThis action cannot be undone.`;
+
+if (!confirm(confirmationMessage)) {
+console.log("Confirmation cancelled by user.");
+return; // User cancelled
+}
+
+console.log("Confirmation accepted. Processing assignments.");
+
+// Process each pending assignment
+state.pendingAssignments.forEach(assignment => {
+const reservation = state.reservations.find(r => r.id === assignment.reservationId);
+const table = state.tables.find(t => t.id === assignment.tableId);
+
+if (reservation && table) {
+console.log(`Finalizing assignment: Reservation ${reservation.id} to Table ${table.id}`);
+// Finalize the assignment in the state
+reservation.assigned_table_id = table.id;
+reservation.pending = false; // Remove pending status
+table.assigned_reservation_id = reservation.id; // Assign reservation to table
+table.pending_reservation_id = null; // Remove pending status from table
+
+// Add the reservation details to the table's history (for conflict checking)
+table.reservations.push({
+reservationId: reservation.id,
+date: assignment.date,
+startTime: assignment.startTime,
+endTime: assignment.endTime
+});
+
+// Optional: Log the confirmed assignment
+console.log(`Confirmed: Reservation ${reservation.id} assigned to Table ${table.id}`);
+} else {
+console.error(`Error finalizing assignment: Reservation ${assignment.reservationId} or Table ${assignment.tableId} not found in state.`);
+}
+});
+
+// Clear all pending assignments
+state.pendingAssignments = [];
+
+console.log("State after confirmation:", {
+reservations: [...state.reservations],
+tables: [...state.tables],
+pendingAssignments: [...state.pendingAssignments]
+});
+
+// Re-render the UI to show confirmed status
+renderReservations();
+renderTables();
+
+// Disable the confirm button
+confirmReservationBtn.disabled = true;
+
+alert('Reservations confirmed successfully!');
+}
+
+// --- Filter Functions ---
+
+/**
+* Filters the displayed reservation items based on the current filter selections.
+*/
+function filterReservations() {
+// console.log("Filtering reservations...");
+const dateValue = dateFilter.value;
+const timeValue = timeFilter.value;
+const endTimeValue = endTimeFilter.value;
+const guestValue = guestFilter.value;
+const statusValue = statusFilter.value;
+
+let visibleCount = 0;
+const reservationItems = reservationsContainer.querySelectorAll('.reservation-item');
+
+// Check if there are reservations in the state to filter
+if (state.reservations.length === 0) {
+// If state is empty, ensure the "No reservations found" message is shown
+const existingEmptyState = reservationsContainer.querySelector('.empty-state');
+if (!existingEmptyState || existingEmptyState.textContent !== 'No reservations found') {
+if (existingEmptyState) existingEmptyState.remove();
+const emptyStateDiv = document.createElement('div');
+emptyStateDiv.className = 'empty-state';
+emptyStateDiv.innerHTML = `
+<i class="far fa-calendar-times fa-2x"></i>
+<p>No reservations found</p>
+`;
+reservationsContainer.appendChild(emptyStateDiv);
+}
+return; // No reservations to filter
+}
+
+
+reservationItems.forEach(item => {
+const itemDate = item.dataset.date;
+const itemTime = item.dataset.time;
+const itemDuration = parseInt(item.dataset.duration);
+const itemGuests = parseInt(item.dataset.guests);
+// Check status based on classes applied by renderReservations
+const isAssigned = item.classList.contains('assigned-reservation');
+const isPending = item.classList.contains('pending-reservation');
+const isUnassigned = !isAssigned && !isPending;
+
+let show = true;
+
+// Date filter
+if (dateValue && itemDate !== dateValue) {
+show = false;
+}
+
+// Time filter (show reservations that overlap with the selected time range)
+if (timeValue && endTimeValue) {
+const filterStartTime = timeValue;
+const filterEndTime = endTimeValue;
+const itemEndTime = calculateEndTime(itemTime, itemDuration);
+
+if (!isTimeOverlapping(filterStartTime, filterEndTime, itemTime, itemEndTime)) {
+show = false;
+}
+} else if (timeValue) {
+// If only start time is set, filter reservations starting at or after this time
+const filterStartTimeMins = timeToMinutes(timeValue);
+const itemTimeMins = timeToMinutes(itemTime);
+if (itemTimeMins < filterStartTimeMins) {
+show = false;
+}
+} else if (endTimeValue) {
+// If only end time is set, filter reservations ending at or before this time
+const filterEndTimeMins = timeToMinutes(endTimeValue);
+const itemEndTimeMins = timeToMinutes(calculateEndTime(itemTime, itemDuration));
+if (itemEndTimeMins > filterEndTimeMins) {
+show = false;
+}
+}
+
+
+// Guest filter
+if (guestValue !== 'all') {
+if (guestValue === '1-2' && (itemGuests < 1 || itemGuests > 2)) {
+show = false;
+} else if (guestValue === '3-4' && (itemGuests < 3 || itemGuests > 4)) {
+show = false;
+} else if (guestValue === '5-6' && (itemGuests < 5 || itemGuests > 6)) {
+show = false;
+} else if (guestValue === '7+' && itemGuests < 7) {
+show = false;
+}
+}
+
+// Status filter
+if (statusValue !== 'all') {
+if (statusValue === 'unassigned' && !isUnassigned) {
+show = false;
+} else if (statusValue === 'assigned' && !isAssigned) {
+show = false;
+} else if (statusValue === 'pending' && !isPending) {
+show = false;
+}
+}
+
+item.style.display = show ? 'flex' : 'none';
+if (show) {
+visibleCount++;
+}
+});
+
+// Show/hide empty state message for filters
+const existingEmptyState = reservationsContainer.querySelector('.empty-state');
+if (visibleCount === 0 && state.reservations.length > 0) {
+// If there are reservations in state but none visible after filtering
+if (!existingEmptyState || existingEmptyState.textContent !== 'No reservations match your filters') {
+// Remove old empty state if it exists and isn't the filter one
+if (existingEmptyState) existingEmptyState.remove();
+const emptyStateDiv = document.createElement('div');
+emptyStateDiv.className = 'empty-state';
+emptyStateDiv.innerHTML = `
+<i class="far fa-calendar-times fa-2x"></i>
+<p>No reservations match your filters</p>
+`;
+reservationsContainer.appendChild(emptyStateDiv);
+}
+} else if (visibleCount > 0 && existingEmptyState && existingEmptyState.textContent === 'No reservations match your filters') {
+existingEmptyState.remove();
+}
+// Note: The case where state.reservations.length === 0 is handled at the beginning
+// console.log("Reservations filtered. Visible count:", visibleCount);
+}
+
+/**
+* Filters the displayed table items based on the current filter selections.
+*/
+function filterTables() {
+// console.log("Filtering tables...");
+const capacityValue = capacityFilter.value;
+const statusValue = tableStatusFilter.value;
+
+let visibleCount = 0;
+const tableItems = tablesContainer.querySelectorAll('.dynamic-table-list');
+
+// Check if there are tables in the state to filter
+if (state.tables.length === 0) {
+// If state is empty, ensure the "No tables configured" message is shown
+const existingEmptyState = tablesContainer.querySelector('.empty-state');
+if (!existingEmptyState || existingEmptyState.textContent !== 'No tables configured') {
+if (existingEmptyState) existingEmptyState.remove();
+const emptyStateDiv = document.createElement('div');
+emptyStateDiv.className = 'empty-state';
+emptyStateDiv.innerHTML = `
+<i class="fas fa-chair fa-2x"></i>
+<p>No tables configured</p>
+`;
+tablesContainer.appendChild(emptyStateDiv);
+}
+return; // No tables to filter
+}
+
+tableItems.forEach(item => {
+const itemCapacity = parseInt(item.dataset.capacity);
+const statusElement = item.querySelector('.table-status');
+// Check status based on classes applied by renderTables
+const isReserved = statusElement?.classList.contains('status-reserved');
+const isPending = statusElement?.classList.contains('status-pending');
+const isAvailable = statusElement?.classList.contains('status-available');
+
+
+let show = true;
+
+// Capacity filter
+if (capacityValue !== 'all') {
+if (capacityValue === '1-2' && (itemCapacity < 1 || itemCapacity > 2)) {
+show = false;
+} else if (capacityValue === '3-4' && (itemCapacity < 3 || itemCapacity > 4)) {
+show = false;
+} else if (capacityValue === '5-6' && (itemCapacity < 5 || itemCapacity > 6)) {
+show = false;
+} else if (capacityValue === '7+' && itemCapacity < 7) {
+show = false;
+}
+}
+
+// Status filter
+if (statusValue !== 'all') {
+if (statusValue === 'available' && !isAvailable) {
+show = false;
+} else if (statusValue === 'reserved' && !isReserved) {
+show = false;
+} else if (statusValue === 'pending' && !isPending) {
+show = false;
+}
+}
+
+item.style.display = show ? 'flex' : 'none';
+if (show) {
+visibleCount++;
+}
+});
+
+// Show/hide empty state message for filters
+const existingEmptyState = tablesContainer.querySelector('.empty-state');
+if (visibleCount === 0 && state.tables.length > 0) {
+if (!existingEmptyState || existingEmptyState.textContent !== 'No tables match your filters') {
+if (existingEmptyState) existingEmptyState.remove();
+const emptyStateDiv = document.createElement('div');
+emptyStateDiv.className = 'empty-state';
+emptyStateDiv.innerHTML = `
+<i class="fas fa-chair fa-2x"></i>
+<p>No tables match your filters</p>
+`;
+tablesContainer.appendChild(emptyStateDiv);
+}
+} else if (visibleCount > 0 && existingEmptyState && existingEmptyState.textContent === 'No tables match your filters') {
+existingEmptyState.remove();
+}
+// Note: The case where state.tables.length === 0 is handled at the beginning
+// console.log("Tables filtered. Visible count:", visibleCount);
+}
+
+
+// --- Initialization ---
+
+/**
+* Initializes the application: sets default filters, populates state from DOM, adds event listeners.
+*/
+function init() {
+console.log("Initializing application...");
+// Populate the state object by reading the data rendered by Jinja
+populateStateFromDOM();
+
+// Set today's date as default filter
+const today = new Date().toISOString().split('T')[0];
+dateFilter.value = today;
+
+// Set default time range (e.g., 6pm-8pm)
+timeFilter.value = '18:00';
+endTimeFilter.value = '20:00';
+
+// Add event listeners for filters
+dateFilter.addEventListener('change', filterReservations);
+timeFilter.addEventListener('change', filterReservations);
+endTimeFilter.addEventListener('change', filterReservations);
+guestFilter.addEventListener('change', filterReservations);
+statusFilter.addEventListener('change', filterReservations);
+capacityFilter.addEventListener('change', filterTables);
+tableStatusFilter.addEventListener('change', filterTables);
+
+// Add confirm reservation button listener
+confirmReservationBtn.addEventListener('click', confirmReservations);
+
+// Add drag and drop event listeners to the elements initially rendered by Jinja
+// These listeners need to be added to the elements that exist in the DOM initially.
+document.querySelectorAll('.reservation-item').forEach(item => {
+item.addEventListener('dragstart', handleDragStart);
+item.addEventListener('dragend', handleDragEnd);
+});
+document.querySelectorAll('.dynamic-table-list').forEach(item => {
+item.addEventListener('dragover', handleDragOver);
+item.addEventListener('dragenter', handleDragEnter);
+item.addEventListener('dragleave', handleDragLeave);
+item.addEventListener('drop', handleDrop);
+});
+
+
+// Initial filtering after populating state and adding listeners
+filterReservations();
+filterTables();
+
+// Check initial state for pending assignments and enable button if needed
+confirmReservationBtn.disabled = state.pendingAssignments.length === 0;
+
+console.log("Application initialized. Final state:", state);
+}
+
+// Start the application when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', init);
+
+// --- Note on Alerts ---
+// Using `alert()` is generally discouraged in modern web development
+// for better user experience. In a production application, you would
+// replace `alert()` calls with a custom modal or notification system.
+// They are used here for simplicity in this example.
+
+</script>
+</body>
+</html>

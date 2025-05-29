@@ -1,0 +1,98 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "autoname": "field:table_name",
+ "creation": "2025-05-05 14:16:08.671079",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "restaurant_name",
+  "table_name",
+  "seating_capacity",
+  "table_price",
+  "table_location",
+  "amended_from",
+  "table_shape"
+ ],
+ "fields": [
+  {
+   "fieldname": "seating_capacity",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Seating Capacity",
+   "reqd": 1
+  },
+  {
+   "fieldname": "table_price",
+   "fieldtype": "Currency",
+   "in_list_view": 1,
+   "label": "Table Price",
+   "reqd": 1
+  },
+  {
+   "fieldname": "table_name",
+   "fieldtype": "Data",
+   "label": "Table Name",
+   "read_only": 1,
+   "unique": 1
+  },
+  {
+   "fieldname": "table_location",
+   "fieldtype": "Select",
+   "label": "Table Location",
+   "options": "\nIndoor\nOutdoor\nTerrace\nBalcony\nVIP Lounge\nNear Window",
+   "reqd": 1
+  },
+  {
+   "fieldname": "restaurant_name",
+   "fieldtype": "Link",
+   "label": "Restaurant Name",
+   "options": "Restaurant Master"
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Restaurant Table Master",
+   "print_hide": 1,
+   "read_only": 1,
+   "search_index": 1
+  },
+  {
+   "fieldname": "table_shape",
+   "fieldtype": "Data",
+   "label": "Table Shape",
+   "reqd": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2025-05-16 15:01:08.252685",
+ "modified_by": "Administrator",
+ "module": "Restaurant_Management_Systtem",
+ "name": "Restaurant Table Master",
+ "naming_rule": "By fieldname",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
